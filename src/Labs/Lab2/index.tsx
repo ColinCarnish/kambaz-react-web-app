@@ -1,4 +1,3 @@
-import React from 'react';
 export default function Lab2() {
     return (
       <div>
