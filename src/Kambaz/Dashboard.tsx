@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import reactImage from "/images/reactjs.webp";
 export default function Dashboard() {
   return (
     <div id="wd-dashboard">
@@ -8,7 +9,7 @@ export default function Dashboard() {
         <div className="wd-dashboard-course">
           <Link to="/Kambaz/Courses/1234/Home"
                 className="wd-dashboard-course-link" >
-            <img src="/images/reactjs.jpg" width={200} />
+            <img src={reactImage} width={200} />
             <div>
               <h5> CS1234 React JS </h5>
               <p className="wd-dashboard-course-title">
