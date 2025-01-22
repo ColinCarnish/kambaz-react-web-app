@@ -1,3 +1,4 @@
+import teslabotImage from "/images/teslabot.jpg";
 export default function Lab1() {
     return (
       <div id="wd-lab1">
@@ -58,6 +59,16 @@ the right.
 This is the third paragraph. Wrap each paragraph with the paragraph
 tag to tell browsers to render the gaps.
         </p>
+      </div>
+      <div id="wd-images">
+        <h4>Image tag</h4>
+        Loading an image from the internet: <br />
+        <img id="wd-starship" width="400px"
+        src="https://www.staradvertiser.com/wp-content/uploads/2021/08/web1_Starship-gap2.jpg" />
+        <br />
+        Loading a local image:
+        <br />
+        <img id="wd-teslabot" src={teslabotImage} height="200px" />
       </div>
       <div id="wd-lists">
         <h4>List Tags</h4>
