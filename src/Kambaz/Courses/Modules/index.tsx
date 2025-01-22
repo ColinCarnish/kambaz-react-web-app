@@ -4,7 +4,7 @@ export default function Modules() {
         <button>Collapse All</button> 
         <button>View Progress</button>
         <select multiple id="wd-select-publish-option">
-           <option value="PUBLISH ALL">Publish All</option>
+           <option selected value="PUBLISH ALL">Publish All</option>
            <option value="UNPUBLISH ALL">Unpublish All</option>
         </select>
         <button>+ Module</button>
