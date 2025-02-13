@@ -1,70 +1,78 @@
+import { Form, Button, Row, Col } from "react-bootstrap";
 export default function AssignmentEditor() {
-    return (
-      <div id="wd-assignments-editor">
-        <label htmlFor="wd-name"><b>Assignment Name</b></label>
-        <br></br>
-        <input id="wd-name" value="A1 - ENV + HTML" /><br /><br />
-        <textarea id="wd-description">
-          The assignment is available online Submit a link to the landing page of
-        </textarea>
-        <br /><br />    
-            <label htmlFor="wd-points"><b>Points </b></label>
-            <input id="wd-points" type="number" value={100} />
-            <br /><br />
-
-            <label htmlFor="wd-assignment-group"><b>Assignment Group </b></label>
-            <select id="wd-assignment-group">
-                <option value="assignments">ASSIGNMENTS </option>
-            </select>
-            <br /><br />
-
-            <label htmlFor="wd-display-grade"><b>Display Grade as </b></label>
-            <select id="wd-display-grade">
-                <option value="percentage">Percentage</option>
-            </select>
-            <br /><br />
-
-            <label htmlFor="wd-submission-type"><b>Submission Type </b></label>
-            <select id="wd-submission-type">
-                <option value="online">Online</option>
-            </select>
-            <br /><br />
-
-            <fieldset>
-                <legend><b>Online Entry Options </b></legend>
-                <input type="checkbox" id="text-entry" />
-                <label htmlFor="text-entry"> Text Entry</label>
-                <br />
-                <input type="checkbox" id="website-url" />
-                <label htmlFor="website-url"> Website URL</label>
-                <br />
-                <input type="checkbox" id="media-recordings" />
-                <label htmlFor="media-recordings"> Media Recordings</label>
-                <br />
-                <input type="checkbox" id="student-annotation" />
-                <label htmlFor="student-annotation"> Student Annotation</label>
-                <br />
-                <input type="checkbox" id="file-uploads" />
-                <label htmlFor="file-uploads"> File Uploads</label>
-            </fieldset>
-            <br /><br />
-
-            <label htmlFor="wd-assign-to"><b>Assign to </b></label>
-            <input id="wd-assign-to" value="Everyone" />
-            <br /><br />
-
-            <label htmlFor="wd-due-date"><b>Due </b></label>
-            <input id="wd-due-date" type="date" defaultValue="2024-05-13" />
-            <br /><br />
-
-            <label htmlFor="wd-available-dates"><b>Available from </b></label>
-            <input id="wd-available-from" type="date" defaultValue="2024-05-06" />
-            <input id="wd-available-until" type="date" defaultValue="2024-05-20" />
-            <br /><br />
-
-        <button>Cancel</button>
-        <button>Save</button>
+  return (
+    <div>
+      <Form.Group className="mb-3">
+        <Form.Label><b>Assignment Name</b></Form.Label>
+        <Form.Control type="text" defaultValue={'A1'} />
+      </Form.Group>
+      
+      <Form.Group className="mb-3">
+        <Form.Label><b>Instructions</b></Form.Label>
+        <Form.Control
+          as="textarea"
+          rows={12}
+          defaultValue={`The assignment is available online. Submit a link to the landing page of your Web application running on Netlify.\n\nThe landing page should include the following:\n\n• Your full name and section\n• Links to each of the lab assignments\n• Link to the Kanbas application\n• Links to all relevant source code repositories\n\nThe Kanbas application should include a link to navigate back to the landing page.`}
+        />
+      </Form.Group>
+      
+      <Form.Group className="mb-3">
+        <Form.Label><b>Points</b></Form.Label>
+        <Form.Control type="number" defaultValue={100} />
+      </Form.Group>
+      
+      <Form.Group className="mb-3">
+        <Form.Label><b>Assignment Group</b></Form.Label>
+        <Form.Select defaultValue="ASSIGNMENTS">
+          <option value="ASSIGNMENTS">ASSIGNMENTS</option>
+          <option value="QUIZZES">QUIZZES</option>
+          <option value="PROJECTS">PROJECTS</option>
+        </Form.Select>
+      </Form.Group>
+      
+      <Form.Group className="mb-3">
+        <Form.Label><b>Display Grade as</b></Form.Label>
+        <Form.Select defaultValue="Percentage">
+          <option value="Percentage">Percentage</option>
+          <option value="Complete/Incomplete">Complete/Incomplete</option>
+          <option value="Points">Points</option>
+        </Form.Select>
+      </Form.Group>
+      
+      <Form.Group className="mb-3">
+        <Form.Label><b>Submission Type</b></Form.Label>
+        <Form.Select defaultValue="Online">
+          <option value="Online">Online</option>
+        </Form.Select>
+        
+        <Form.Group className="mt-2 ms-3">
+          <Form.Check type="checkbox" label="Text Entry" />
+          <Form.Check type="checkbox" label="Website URL" defaultChecked />
+          <Form.Check type="checkbox" label="Media Recordings" />
+          <Form.Check type="checkbox" label="Student Annotation" />
+          <Form.Check type="checkbox" label="File Uploads" />
+        </Form.Group>
+      </Form.Group>
+      
+      <Row className="mb-3">
+        <Col>
+          <Form.Label><b>Due</b></Form.Label>
+          <Form.Control type="datetime-local" defaultValue="2024-05-13T23:59" />
+        </Col>
+        <Col>
+          <Form.Label><b>Available from</b></Form.Label>
+          <Form.Control type="datetime-local" defaultValue="2024-05-06T12:00" />
+        </Col>
+        <Col>
+          <Form.Label><b>Until</b></Form.Label>
+          <Form.Control type="datetime-local" />
+        </Col>
+      </Row>
+      
+      <div className="d-flex justify-content-end">
+        <Button variant="secondary" className="me-2">Cancel</Button>
+        <Button variant="danger">Save</Button>
+      </div>
     </div>
   );
 }
-  
