@@ -38,7 +38,7 @@ export default function PeopleTable() {
      <tr><td className="wd-full-name text-nowrap">
           <FaUserCircle className="me-2 fs-1 text-secondary" />
           <span className="wd-first-name">Natasha</span>{" "}
-          <span className="wd-last-name"></span></td>
+          <span className="wd-last-name">Romanoff</span></td>
       <td className="wd-login-id">001232309S</td>
       <td className="wd-section">S102</td>
       <td className="wd-role">STUDENT</td>
