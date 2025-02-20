@@ -1,41 +1,56 @@
-import { ListGroup } from "react-bootstrap";
 import ModulesControls from "./ModulesControl";
-import GreenCheckmark from "./GreenCheckMark";
+import LessonControlButtons from "./LessonsControlButtons";
+import { useParams } from "react-router";
+import { BsGripVertical } from "react-icons/bs";
+import * as db from "../../Database";
+
+interface Lesson {
+  _id: string;
+  name: string;
+  description: string;
+  module: string;
+}
+
+interface Modules {
+  _id: string;
+  name: string;
+  description: string;
+  course: string;
+  lessons?: Lesson[];
+}
 
 export default function Modules() {
-    return (
-      <div>
-        <ModulesControls /><br /><br /><br /><br />
-        <ListGroup className="rounded-0" id="wd-modules">
-          <ListGroup.Item className="wd-module p-0 mb-5 fs-5 border-gray">
-            <div className="wd-title p-3 ps-2 bg-secondary d-flex justify-content-between align-items-center"> 
-              Week 1 <GreenCheckmark />
-            </div>
-            <ListGroup className="wd-lessons rounded-0">
-              <ListGroup.Item className="wd-lesson p-3 ps-1 d-flex justify-content-between align-items-center">
-                LEARNING OBJECTIVES <GreenCheckmark />
-              </ListGroup.Item>
-              <ListGroup.Item className="wd-lesson p-3 ps-1 d-flex justify-content-between align-items-center">
-                Introduction to the course <GreenCheckmark />
-              </ListGroup.Item>
-              <ListGroup.Item className="wd-lesson p-3 ps-1 d-flex justify-content-between align-items-center">
-                Learn what is Web Development <GreenCheckmark />
-              </ListGroup.Item>
-            </ListGroup>
-          </ListGroup.Item>
-          <ListGroup.Item className="wd-module p-0 mb-5 fs-5 border-gray">
-            <div className="wd-title p-3 ps-2 bg-secondary d-flex justify-content-between align-items-center"> 
-              Week 2 <GreenCheckmark />
-            </div>
-            <ListGroup className="wd-lessons rounded-0">
-              <ListGroup.Item className="wd-lesson p-3 ps-1 d-flex justify-content-between align-items-center">
-                LESSON 1 <GreenCheckmark />
-              </ListGroup.Item>
-              <ListGroup.Item className="wd-lesson p-3 ps-1 d-flex justify-content-between align-items-center">
-                LESSON 2 <GreenCheckmark />
-              </ListGroup.Item>
-            </ListGroup>
-          </ListGroup.Item>
-        </ListGroup>
+  const modules: Modules[] = db.modules as Modules[];
+  const { cid } = useParams();
+
+  return (
+    <div>
+      <div className="d-flex mb-2">
+        <ModulesControls />
       </div>
-  );}
+      <ul id="wd-modules" className="list-group rounded-0">
+        {modules
+          .filter((module) => module.course === cid)
+          .map((module) => (
+            <li key={module._id} className="list-group-item p-0 mb-2 border-gray">
+              <div className="p-3 bg-secondary d-flex align-items-center">
+                <BsGripVertical className="me-2 fs-5" /> {module.name}
+              </div>
+              {module.lessons && (
+                <ul className="list-group rounded-0">
+                  {module.lessons.map((lesson) => (
+                    <li key={lesson._id} className="list-group-item d-flex align-items-center p-3 justify-content-between">
+                      <span>
+                        <BsGripVertical className="me-2 fs-5" /> {lesson.name}
+                      </span>
+                      <LessonControlButtons />
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </li>
+          ))}
+      </ul>
+    </div>
+  );
+}
