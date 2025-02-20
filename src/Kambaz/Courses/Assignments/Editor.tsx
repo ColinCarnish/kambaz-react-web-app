@@ -28,7 +28,7 @@ export default function AssignmentEditor() {
         <Form.Control
           as="textarea"
           rows={12}
-          defaultValue={assignment.description || "No instructions provided."}
+          defaultValue={assignment.description || "No description provided."}
         />
       </Form.Group>
       <Form.Group className="mb-3">
