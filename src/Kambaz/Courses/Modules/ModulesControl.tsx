@@ -2,10 +2,7 @@ import { Button, Dropdown } from "react-bootstrap";
 import { FaPlus } from "react-icons/fa";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { FaCompressAlt } from "react-icons/fa";
-
-function GreenCheckmark() {
-  return <span style={{ color: "green" }}>✔</span>;
-}
+import GreenCheckmark from "./GreenCheckMark";
 
 export default function ModulesControls() {
   return (
@@ -49,3 +46,4 @@ export default function ModulesControls() {
     </div>
   );
 }
+
