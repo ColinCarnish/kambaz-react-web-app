@@ -1,56 +1,56 @@
+import ModulesControls from "./ModulesControl";
+import LessonControlButtons from "./LessonsControlButtons";
+import { useParams } from "react-router";
+import { BsGripVertical } from "react-icons/bs";
+import * as db from "../../Database";
+
+interface Lesson {
+  _id: string;
+  name: string;
+  description: string;
+  module: string;
+}
+
+interface Modules {
+  _id: string;
+  name: string;
+  description: string;
+  course: string;
+  lessons?: Lesson[];
+}
+
 export default function Modules() {
-    return (
-      <div>
-        <button>Collapse All</button> 
-        <button>View Progress</button>
-        <select id="wd-select-publish-option">
-           <option selected value="PUBLISH ALL">Publish All</option>
-           <option value="UNPUBLISH ALL">Unpublish All</option>
-        </select>
-        <button>+ Module</button>
-        <ul id="wd-modules">
-          <li className="wd-module">
-            <div className="wd-title">Week 1, Lecture 1 - Course Introduction, Syllabus, Agenda</div>
-            <ul className="wd-lessons">
-              <li className="wd-lesson">
-                <span className="wd-title">LEARNING OBJECTIVES</span>
-                <ul className="wd-content">
-                  <li className="wd-content-item">Introduction to the course</li>
-                  <li className="wd-content-item">Learn what is Web Development</li>
-                </ul>
-                <span className="wd-title">READING</span>
-                <ul className="wd-content">
-                  <li className="wd-content-item">Full Stack Developer - Chapter 1 - Introduction</li>
-                  <li className="wd-content-item">Full Stack Developer - Chapter 2 - Creating User Interfaces</li>
-                </ul>
-                <span className="wd-title">SLIDES</span>
-                <ul className="wd-content">
-                  <li className="wd-content-item">Introduction to Web Development</li>
-                  <li className="wd-content-item">Creating an HTTP server with Node.js</li>
-                  <li className="wd-content-item">Creating a React Application</li>
-                </ul>
-              </li>
-            </ul>
-          </li>
-          <li className="wd-module">
-            <div className="wd-title">Week 1, Lecture 2 - Formatting User Interfaces with HTML</div>
-            <ul className="wd-lessons">
-              <li className="wd-lesson">
-                <span className="wd-title">LEARNING OBJECTIVES</span>
-                <ul className="wd-content">
-                  <li className="wd-content-item">Learn how to create user interfaces with HTML</li>
-                  <li className="wd-content-item">Deploy the assignment with Netlify</li>
-                </ul>
-                <span className="wd-title">SLIDES</span>
-                <ul className="wd-content">
-                  <li className="wd-content-item">Introduction to HTML and the DOM</li>
-                  <li className="wd-content-item">Formatting Web Content with Headings and</li>
-                  <li className="wd-content-item">Formatting Content with Lists and Tables</li>
-                </ul>
-              </li>
-            </ul>
-          </li>
-        </ul>
+  const modules: Modules[] = db.modules as Modules[];
+  const { cid } = useParams();
+
+  return (
+    <div>
+      <div className="d-flex mb-2">
+        <ModulesControls />
       </div>
-  );}
-  
+      <ul id="wd-modules" className="list-group rounded-0">
+        {modules
+          .filter((module) => module.course === cid)
+          .map((module) => (
+            <li key={module._id} className="list-group-item p-0 mb-2 border-gray">
+              <div className="p-3 bg-secondary d-flex align-items-center">
+                <BsGripVertical className="me-2 fs-5" /> {module.name}
+              </div>
+              {module.lessons && (
+                <ul className="list-group rounded-0">
+                  {module.lessons.map((lesson) => (
+                    <li key={lesson._id} className="list-group-item d-flex align-items-center p-3 justify-content-between">
+                      <span>
+                        <BsGripVertical className="me-2 fs-5" /> {lesson.name}
+                      </span>
+                      <LessonControlButtons />
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </li>
+          ))}
+      </ul>
+    </div>
+  );
+}
