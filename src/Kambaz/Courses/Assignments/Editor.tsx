@@ -5,10 +5,10 @@ interface Assignment {
   _id: string;
   title: string;
   course: string;
-  description: string;
-  points: number;
-  dueDate: string;
-  availableDate: string;
+  description?: string;
+  points?: number;
+  dueDate?: string;
+  availableDate?: string;
 }
 const assignmentsData: Assignment[] = (db.assignments || []) as Assignment[];
 export default function AssignmentEditor() {
@@ -28,7 +28,7 @@ export default function AssignmentEditor() {
         <Form.Control
           as="textarea"
           rows={12}
-          defaultValue={assignment.description || "No Description provided."}
+          defaultValue={assignment.description || "No instructions provided."}
         />
       </Form.Group>
       <Form.Group className="mb-3">
@@ -85,3 +85,4 @@ export default function AssignmentEditor() {
     </div>
   );
 }
+
