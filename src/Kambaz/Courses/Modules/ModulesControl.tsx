@@ -1,14 +1,27 @@
 import { Button, Dropdown } from "react-bootstrap";
 import { FaPlus } from "react-icons/fa";
+import { useState } from "react";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { FaCompressAlt } from "react-icons/fa";
 import GreenCheckmark from "./GreenCheckMark";
+import ModuleEditor from "./ModuleEditor";
 
-export default function ModulesControls() {
+export default function ModulesControls({
+  moduleName,
+  setModuleName,
+  addModule,
+}: {
+  moduleName: string;
+  setModuleName: (title: string) => void;
+  addModule: () => void;
+}) {
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true); 
+
   return (
     <div id="wd-modules-controls" className="text-nowrap">
-      
-      <Button variant="danger" size="lg" className="me-1 float-end" id="wd-add-module-btn">
+      <Button variant="danger" onClick={handleShow}>
         <FaPlus className="position-relative me-2" style={{ bottom: "1px" }} />
         Module
       </Button>
@@ -36,14 +49,25 @@ export default function ModulesControls() {
           </Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
+
       <Button variant="outline-primary" size="lg" className="me-2 float-end" id="wd-view-progress">
         <MdOutlineRemoveRedEye className="me-2" /> View Progress
       </Button>
+
       <Button variant="outline-secondary" size="lg" className="me-2 float-end" id="wd-collapse-all">
         <FaCompressAlt className="me-2" /> Collapse All
       </Button>
 
+      <ModuleEditor
+        show={show}
+        handleClose={handleClose}
+        dialogTitle="Add Module"
+        moduleName={moduleName}
+        setModuleName={setModuleName}
+        addModule={addModule}
+      />
     </div>
   );
 }
+
 
