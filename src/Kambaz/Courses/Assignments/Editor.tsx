@@ -1,88 +1,111 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { Form, Row, Col } from "react-bootstrap";
+import { useSelector, useDispatch } from "react-redux";
+import { addAssignment, updateAssignment } from "./reducer";
 import * as db from "../../Database";
+
 interface Assignment {
   _id: string;
   title: string;
   course: string;
   description?: string;
   points?: number;
-  dueDate?: string;
-  availableDate?: string;
+  due?: string;
+  available?: string;
 }
-const assignmentsData: Assignment[] = (db.assignments || []) as Assignment[];
+
+const formatDateForDisplay = (dateString: string) => {
+  const date = new Date(dateString);
+  return date.toLocaleString("en-US", {
+    month: "long",
+    day: "numeric",
+  });
+};
+
+const formatDateForInput = (dateString: string) => {
+  const date = new Date(dateString);
+  return date.toISOString().slice(0, 10);
+};
+
 export default function AssignmentEditor() {
   const { cid, aid } = useParams<{ cid?: string; aid?: string }>();
-  const assignment = assignmentsData.find((a) => a._id === aid && a.course === cid);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const reduxAssignments = useSelector((state: any) => state.assignmentsReducer.assignments);
+  const assignmentsData: Assignment[] = [...(db.assignments || []), ...reduxAssignments];
+  let assignment = assignmentsData.find((a) => a._id === aid && a.course === cid);
+
   if (!assignment) {
-    return <p className="text-danger">Error: Assignment not found.</p>;
+    assignment = {
+      _id: aid!,
+      title: "",
+      course: cid!,
+      description: "",
+      points: 100,
+      due: new Date().toISOString(),
+      available: new Date().toISOString(),
+    };
   }
+
+  const handleSave = () => {
+    const updatedAssignment = {
+      ...assignment!,
+      title: (document.getElementById("title") as HTMLInputElement).value,
+      description: (document.getElementById("description") as HTMLTextAreaElement).value,
+      points: Number((document.getElementById("points") as HTMLInputElement).value),
+      due: (document.getElementById("due") as HTMLInputElement).value,
+      available: (document.getElementById("available") as HTMLInputElement).value,
+    };
+
+    const exists = reduxAssignments.some((a: Assignment) => a._id === aid);
+    if (exists) {
+      dispatch(updateAssignment(updatedAssignment));
+    } else {
+      dispatch(addAssignment(updatedAssignment));
+    }
+
+    navigate(`/Kambaz/Courses/${cid}/Assignments`);
+  };
+
   return (
     <div>
       <Form.Group className="mb-3">
         <Form.Label><b>Assignment Name</b></Form.Label>
-        <Form.Control type="text" defaultValue={assignment.title} />
+        <Form.Control id="title" type="text" defaultValue={assignment.title} />
       </Form.Group>
       <Form.Group className="mb-3">
         <Form.Label><b>Description</b></Form.Label>
         <Form.Control
+          id="description"
           as="textarea"
           rows={12}
-          defaultValue={assignment.description || "No description provided."}
+          defaultValue={assignment.description || "No instructions provided."}
         />
       </Form.Group>
       <Form.Group className="mb-3">
         <Form.Label><b>Points</b></Form.Label>
-        <Form.Control type="number" defaultValue={assignment.points || 100} />
-      </Form.Group>
-      <Form.Group className="mb-3">
-        <Form.Label><b>Assignment Group</b></Form.Label>
-        <Form.Select defaultValue="ASSIGNMENTS">
-          <option value="ASSIGNMENTS">ASSIGNMENTS</option>
-          <option value="QUIZZES">QUIZZES</option>
-          <option value="PROJECTS">PROJECTS</option>
-        </Form.Select>
-      </Form.Group>
-      <Form.Group className="mb-3">
-        <Form.Label><b>Display Grade as</b></Form.Label>
-        <Form.Select defaultValue="Percentage">
-          <option value="Percentage">Percentage</option>
-          <option value="Complete/Incomplete">Complete/Incomplete</option>
-          <option value="Points">Points</option>
-        </Form.Select>
-      </Form.Group>
-      <Form.Group className="mb-3">
-        <Form.Label><b>Submission Type</b></Form.Label>
-        <Form.Select defaultValue="Online">
-          <option value="Online">Online</option>
-        </Form.Select>
-        <Form.Group className="mt-2 ms-3">
-          <Form.Check type="checkbox" label="Text Entry" />
-          <Form.Check type="checkbox" label="Website URL" defaultChecked />
-          <Form.Check type="checkbox" label="Media Recordings" />
-          <Form.Check type="checkbox" label="Student Annotation" />
-          <Form.Check type="checkbox" label="File Uploads" />
-        </Form.Group>
+        <Form.Control id="points" type="number" defaultValue={assignment.points || 100} />
       </Form.Group>
       <Row className="mb-3">
         <Col>
-          <Form.Label><b>Due</b></Form.Label>
-          <Form.Control type="datetime-local" defaultValue={assignment.dueDate || "2024-05-13T23:59"} />
+          <Form.Label><b>Due</b> ({formatDateForDisplay(assignment.due || "")})</Form.Label>
+          <Form.Control id="due" type="date" defaultValue={formatDateForInput(assignment.due || "")} />
         </Col>
         <Col>
-          <Form.Label><b>Available from</b></Form.Label>
-          <Form.Control type="datetime-local" defaultValue={assignment.availableDate || "2024-05-06T12:00"} />
+          <Form.Label><b>Available from</b> ({formatDateForDisplay(assignment.available || "")})</Form.Label>
+          <Form.Control id="available" type="date" defaultValue={formatDateForInput(assignment.available || "")} />
         </Col>
         <Col>
-          <Form.Label><b>Until</b></Form.Label>
-          <Form.Control type="datetime-local" />
+          <Form.Label><b>Available until</b> ({formatDateForDisplay(assignment.available || "")})</Form.Label>
+          <Form.Control id="available" type="date" defaultValue={formatDateForInput(assignment.available || "")} />
         </Col>
       </Row>
       <div className="d-flex justify-content-end">
         <Link to={`/Kambaz/Courses/${cid}/Assignments`} className="btn btn-secondary me-2">Cancel</Link>
-        <Link to={`/Kambaz/Courses/${cid}/Assignments`} className="btn btn-danger">Save</Link>
+        <button onClick={handleSave} className="btn btn-danger">Save</button>
       </div>
     </div>
   );
 }
+
 
