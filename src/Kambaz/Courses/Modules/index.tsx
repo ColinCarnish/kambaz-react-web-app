@@ -1,13 +1,14 @@
 import ModulesControls from "./ModulesControl";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import LessonControlButtons from "./LessonsControlButtons";
 import ModuleControlButtons from "./ModuleControlButtons";
 import { useParams } from "react-router";
 import { FormControl } from "react-bootstrap";
 import { BsGripVertical } from "react-icons/bs";
-import { addModule, editModule, updateModule, deleteModule }
-  from "./reducer";
+import { setModules, addModule, editModule, updateModule, deleteModule } from "./reducer";
 import { useSelector, useDispatch } from "react-redux";
+import * as coursesClient from "../client";
+import * as modulesClient from "./client";
 
 interface Lesson {
   _id: string;
@@ -31,11 +32,31 @@ export default function Modules() {
   const [moduleName, setModuleName] = useState("");
   const { modules } = useSelector((state: any) => state.modulesReducer);
   const dispatch = useDispatch();
-
+  const createModuleForCourse = async () => {
+    if (!cid) return;
+    const newModule = { name: moduleName, course: cid };
+    const module = await coursesClient.createModuleForCourse(cid, newModule);
+    dispatch(addModule(module));
+  };
+  const fetchModules = async () => {
+    const modules = await coursesClient.findModulesForCourse(cid as string);
+    dispatch(setModules(modules));
+  };
+  const removeModule = async (moduleId: string) => {
+    await modulesClient.deleteModule(moduleId);
+    dispatch(deleteModule(moduleId));
+  };
+  const saveModule = async (module: any) => {
+    await modulesClient.updateModule(module);
+    dispatch(updateModule(module));
+  };
+  useEffect(() => {
+    fetchModules();
+  }, []);
   return (
     <div>
       <div className="d-flex mb-2">
-      <ModulesControls moduleName={moduleName} setModuleName={setModuleName}
+      <ModulesControls moduleName={moduleName} setModuleName={setModuleName} 
         addModule={() => {
           dispatch(addModule({ name: moduleName, course: cid }));
           setModuleName("");
@@ -43,7 +64,6 @@ export default function Modules() {
       </div>
       <ul id="wd-modules" className="list-group rounded-0">
         {modules
-          .filter((module: Module) => module.course === cid)
           .map((module: Module) => (
             <li key={module._id} className="list-group-item p-0 mb-2 border-gray">
               <div className="p-3 bg-secondary d-flex align-items-center">
