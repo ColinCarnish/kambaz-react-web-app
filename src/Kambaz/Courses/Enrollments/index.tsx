@@ -31,6 +31,16 @@ export default function EnrollmentsScreen() {
   const isEnrolled = (courseId: string) =>
     enrollments.some((e) => e.course === courseId);
 
+  const handleEnroll = async (courseId: string) => {
+    await enrollmentsClient.enroll(currentUser._id, courseId);
+    await loadData();
+  };
+
+  const handleUnenroll = async (courseId: string) => {
+    await enrollmentsClient.unenroll(currentUser._id, courseId);
+    await loadData();
+  };
+
   useEffect(() => {
     if (currentUser?._id) {
       loadData();
@@ -40,17 +50,33 @@ export default function EnrollmentsScreen() {
   return (
     <div className="container mt-4">
       <h2 className="mb-4">Enroll/Unenroll</h2>
-        <Row xs={1} md={2} lg={3} className="g-4">
-            <Button>
-                Unenroll
-            </Button>
-            <br>
-            </br>
-            <Button>
-                Enroll
-            </Button>
-        </Row>
+      <Row xs={1} md={2} lg={3} className="g-4">
+        {courses.map((course) => (
+          <Col key={course._id}>
+            <Card className="h-100">
+              <Card.Body>
+                <Card.Title>{course.name}</Card.Title>
+                <Card.Text>{course.description}</Card.Text>
+                {isEnrolled(course._id) ? (
+                  <Button
+                    variant="danger"
+                    onClick={() => handleUnenroll(course._id)}
+                  >
+                    Unenroll
+                  </Button>
+                ) : (
+                  <Button
+                    variant="primary"
+                    onClick={() => handleEnroll(course._id)}
+                  >
+                    Enroll
+                  </Button>
+                )}
+              </Card.Body>
+            </Card>
+          </Col>
+        ))}
+      </Row>
     </div>
   );
-  
 }
