@@ -15,7 +15,9 @@
     "@emotion/styled": "^11.14.0",
     "@mui/material": "^6.4.7",
     "@reduxjs/toolkit": "^2.6.1",
+    "axios": "^1.8.4",
     "bootstrap": "^5.3.3",
+    "cors": "^2.8.5",
     "lucide": "^0.475.0",
     "lucide-react": "^0.475.0",
     "react": "^18.3.1",
@@ -42,4 +44,3 @@
     "vite": "^6.0.5"
   }
 }
-
