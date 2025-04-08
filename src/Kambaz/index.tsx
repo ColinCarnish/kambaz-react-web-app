@@ -4,10 +4,12 @@ import Dashboard from "./Dashboard";
 import KambazNavigation from "./Navigation";
 import Courses from "./Courses";
 import "./styles.css";
-import * as db from "./Database";
+import { useEffect } from "react";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-
+import Session from "./Account/Session";
+import * as userClient from "./Account/client";
+import { useSelector } from "react-redux";
 
 interface Course {
   _id: string;
@@ -18,47 +20,45 @@ interface Course {
   description: string;
 }
 
-
-
-
 export default function Kambaz() {
-  const [courses, setCourses] = useState<Course[]>(
-    db.courses.map((c: any) => ({
-      _id: c._id,
-      name: c.name,
-      number: c.number,
-      startDate: c.startDate,
-      endDate: c.endDate,
-      description: c.description,
-    }))
-  );
+  const [courses, setCourses] = useState<Course[]>([]);
   const [course, setCourse] = useState<Course>({
-    _id: "1234",
-    name: "New Course",
-    number: "New Number",
-    startDate: "2023-09-10",
-    endDate: "2023-12-15",
-    description: "New Description",
-  });
-
+  _id: "",
+  name: "",
+  number: "",
+  startDate: "",
+  endDate: "",
+  description: "",
+});
+  const { currentUser } = useSelector((state: any) => state.accountReducer);
+  const fetchCourses = async () => {
+    try {
+      const courses = await userClient.findMyCourses();
+      setCourses(courses);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  useEffect(() => {
+    fetchCourses();
+  }, [currentUser]);
 
   const addNewCourse = () => {
-    setCourses([...courses, { ...course, _id: uuidv4() }]);
+    const newCourse = { ...course, _id: uuidv4() };
+    setCourses([...courses, newCourse]);
   };
-
-
+  
   const deleteCourse = (courseId: string) => {
-    setCourses(courses.filter((c) => c._id !== courseId));
+    setCourses(courses.filter((c: Course) => c._id !== courseId));
   };
-
-
+  
   const updateCourse = () => {
     setCourses(
-      courses.map((c) => (c._id === course._id ? course : c))
+      courses.map((c: Course) => (c._id === course._id ? course : c))
     );
   };
- 
   return (
+    <Session>
     <div id="wd-kambaz">
       <KambazNavigation />
       <div className="wd-main-content-offset p-3">
@@ -69,8 +69,8 @@ export default function Kambaz() {
             path="/Dashboard"
             element={
               <Dashboard
-                courses={courses}
                 course={course}
+                courses={courses}
                 setCourse={setCourse}
                 addNewCourse={addNewCourse}
                 deleteCourse={deleteCourse}
@@ -84,5 +84,7 @@ export default function Kambaz() {
         </Routes>
       </div>
     </div>
+    </Session>
   );
 }
+
