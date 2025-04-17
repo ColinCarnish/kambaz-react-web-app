@@ -1,4 +1,6 @@
 import {Table} from "react-bootstrap";
+export default function BootstrapTables() {
+  return (
 <div id="wd-css-responsive-tables">
   <h2>Responsive tables</h2>
   <Table responsive>
@@ -17,3 +19,4 @@ import {Table} from "react-bootstrap";
     </tbody>
   </Table>
 </div>
+ )};

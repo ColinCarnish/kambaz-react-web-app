@@ -1,56 +1,41 @@
+import { ListGroup } from "react-bootstrap";
+import ModulesControls from "./ModulesControl";
+import GreenCheckmark from "./GreenCheckMark";
+
 export default function Modules() {
     return (
       <div>
-        <button>Collapse All</button> 
-        <button>View Progress</button>
-        <select id="wd-select-publish-option">
-           <option selected value="PUBLISH ALL">Publish All</option>
-           <option value="UNPUBLISH ALL">Unpublish All</option>
-        </select>
-        <button>+ Module</button>
-        <ul id="wd-modules">
-          <li className="wd-module">
-            <div className="wd-title">Week 1, Lecture 1 - Course Introduction, Syllabus, Agenda</div>
-            <ul className="wd-lessons">
-              <li className="wd-lesson">
-                <span className="wd-title">LEARNING OBJECTIVES</span>
-                <ul className="wd-content">
-                  <li className="wd-content-item">Introduction to the course</li>
-                  <li className="wd-content-item">Learn what is Web Development</li>
-                </ul>
-                <span className="wd-title">READING</span>
-                <ul className="wd-content">
-                  <li className="wd-content-item">Full Stack Developer - Chapter 1 - Introduction</li>
-                  <li className="wd-content-item">Full Stack Developer - Chapter 2 - Creating User Interfaces</li>
-                </ul>
-                <span className="wd-title">SLIDES</span>
-                <ul className="wd-content">
-                  <li className="wd-content-item">Introduction to Web Development</li>
-                  <li className="wd-content-item">Creating an HTTP server with Node.js</li>
-                  <li className="wd-content-item">Creating a React Application</li>
-                </ul>
-              </li>
-            </ul>
-          </li>
-          <li className="wd-module">
-            <div className="wd-title">Week 1, Lecture 2 - Formatting User Interfaces with HTML</div>
-            <ul className="wd-lessons">
-              <li className="wd-lesson">
-                <span className="wd-title">LEARNING OBJECTIVES</span>
-                <ul className="wd-content">
-                  <li className="wd-content-item">Learn how to create user interfaces with HTML</li>
-                  <li className="wd-content-item">Deploy the assignment with Netlify</li>
-                </ul>
-                <span className="wd-title">SLIDES</span>
-                <ul className="wd-content">
-                  <li className="wd-content-item">Introduction to HTML and the DOM</li>
-                  <li className="wd-content-item">Formatting Web Content with Headings and</li>
-                  <li className="wd-content-item">Formatting Content with Lists and Tables</li>
-                </ul>
-              </li>
-            </ul>
-          </li>
-        </ul>
+        <ModulesControls /><br /><br /><br /><br />
+        <ListGroup className="rounded-0" id="wd-modules">
+          <ListGroup.Item className="wd-module p-0 mb-5 fs-5 border-gray">
+            <div className="wd-title p-3 ps-2 bg-secondary d-flex justify-content-between align-items-center"> 
+              Week 1 <GreenCheckmark />
+            </div>
+            <ListGroup className="wd-lessons rounded-0">
+              <ListGroup.Item className="wd-lesson p-3 ps-1 d-flex justify-content-between align-items-center">
+                LEARNING OBJECTIVES <GreenCheckmark />
+              </ListGroup.Item>
+              <ListGroup.Item className="wd-lesson p-3 ps-1 d-flex justify-content-between align-items-center">
+                Introduction to the course <GreenCheckmark />
+              </ListGroup.Item>
+              <ListGroup.Item className="wd-lesson p-3 ps-1 d-flex justify-content-between align-items-center">
+                Learn what is Web Development <GreenCheckmark />
+              </ListGroup.Item>
+            </ListGroup>
+          </ListGroup.Item>
+          <ListGroup.Item className="wd-module p-0 mb-5 fs-5 border-gray">
+            <div className="wd-title p-3 ps-2 bg-secondary d-flex justify-content-between align-items-center"> 
+              Week 2 <GreenCheckmark />
+            </div>
+            <ListGroup className="wd-lessons rounded-0">
+              <ListGroup.Item className="wd-lesson p-3 ps-1 d-flex justify-content-between align-items-center">
+                LESSON 1 <GreenCheckmark />
+              </ListGroup.Item>
+              <ListGroup.Item className="wd-lesson p-3 ps-1 d-flex justify-content-between align-items-center">
+                LESSON 2 <GreenCheckmark />
+              </ListGroup.Item>
+            </ListGroup>
+          </ListGroup.Item>
+        </ListGroup>
       </div>
   );}
-  
